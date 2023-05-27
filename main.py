@@ -5,6 +5,7 @@ import os
 import streamlit as st
 import time
 import openai
+from streamlit_chat import message
 
 def generate_response(user_input):
     # OpenAI API
@@ -36,8 +37,17 @@ if st.button("发送"):
     with st.spinner("等待回答..."):
         time.sleep(2)
 
-    # get generate_response
-    response = generate_response(user_input)
+        # get generate_response
+        response = generate_response(user_input)
 
-    # show the anwser
-    st.write(response)
+        # Add user input and response to chat history
+        st.session_state['chat_history'].append((user_input, response))
+
+        # show the chat history
+        for user_msg, bot_msg in st.session_state['chat_history']:
+            message(user_msg, is_user=True)
+            message(bot_msg)
+
+    # Add a button to clear chat history
+    if st.button("Clear Chat History"):
+        st.session_state['chat_history'] = []
