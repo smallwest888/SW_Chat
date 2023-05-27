@@ -32,6 +32,9 @@ st.title("SW-ChatBot-中文测试")
 user_input = st.text_input("输入问题：")
 
 if st.button("发送"):
+    if 'chat_history' not in st.session_state:
+        st.session_state['chat_history'] = []
+
     # with a waiting icon
     # GPT needs some time to response
     with st.spinner("等待回答..."):
