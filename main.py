@@ -7,6 +7,7 @@ import time
 import openai
 from streamlit_chat import message
 
+
 def generate_response(user_input):
     # OpenAI API
     openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -23,7 +24,6 @@ def generate_response(user_input):
 
     # get response
     return response.choices[0].message.content.strip()
-
 
 
 st.title("SW-ChatBot-中文测试")
