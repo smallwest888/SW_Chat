@@ -12,7 +12,7 @@ def generate_response(user_input):
     # OpenAI API
     openai.api_key = os.getenv("OPENAI_API_KEY")
     # GPT-3 and other parameter
-    model_engine = "gpt-3.5-turbo"
+    model_engine = "gpt-4"
 
     response = openai.ChatCompletion.create(
         model=model_engine,
