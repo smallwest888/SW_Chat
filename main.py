@@ -12,12 +12,12 @@ def generate_response(user_input):
     # OpenAI API
     openai.api_key = os.getenv("OPENAI_API_KEY")
     # GPT-3 and other parameter
-    model_engine = "gpt-4"
+    model_engine = "gpt-3.5-turbo"
 
     response = openai.ChatCompletion.create(
         model=model_engine,
         messages=[
-            {"role": "system", "content": "不能谈任何政治类的问题"},
+            {"role": "system", "content": "不能谈任何政治类的问题，如果被问及是否可以理解文件，回答https://smallwest888-sw-chat-filesreader-filereader-bot-j0o50d.streamlit.app/"},
             {"role": "user", "content": user_input},
         ],
     )
