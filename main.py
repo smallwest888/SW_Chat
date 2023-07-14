@@ -5,8 +5,6 @@ import os
 import streamlit as st
 import time
 import openai
-from streamlit_chat import message
-
 
 def generate_response(user_input):
     # OpenAI API
@@ -25,32 +23,35 @@ def generate_response(user_input):
     # get response
     return response.choices[0].message.content.strip()
 
-
 st.title("SW-ChatBot-中文测试")
 
-# input frame
-user_input = st.text_input("输入问题：")
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-if st.button("发送"):
-    if 'chat_history' not in st.session_state:
-        st.session_state['chat_history'] = []
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-    # with a waiting icon
-    # GPT needs some time to response
+# Accept user input
+if prompt := st.text_input("输入问题："):
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    # Display user message in chat message container
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Display assistant response in chat message container
     with st.spinner("等待回答..."):
         time.sleep(2)
-
         # get generate_response
-        response = generate_response(user_input)
+        response = generate_response(prompt)
+        with st.chat_message("assistant"):
+            st.markdown(response)
+        # Add assistant response to chat history
+        st.session_state.messages.append({"role": "assistant", "content": response})
 
-        # Add user input and response to chat history
-        st.session_state['chat_history'].append((user_input, response))
-
-        # show the chat history
-        for user_msg, bot_msg in st.session_state['chat_history']:
-            message(user_msg, is_user=True)
-            message(bot_msg)
-
-    # Add a button to clear chat history
-    if st.button("Clear Chat History"):
-        st.session_state['chat_history'] = []
+# Add a button to clear chat history
+if st.button("Clear Chat History"):
+    st.session_state['chat_history'] = []
